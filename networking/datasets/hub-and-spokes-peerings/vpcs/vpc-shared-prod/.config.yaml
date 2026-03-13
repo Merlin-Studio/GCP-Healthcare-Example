@@ -1,0 +1,10 @@
+project_id: $project_ids:net-core-0
+nat_config:
+  nat-vpc-shared-prod-us-east1:
+    region: us-east1
+  nat-vpc-shared-prod-us-west1:
+    region: us-west1
+routes:
+  default-route:
+    dest_range: 0.0.0.0/0
+    next_hop: default-internet-gateway

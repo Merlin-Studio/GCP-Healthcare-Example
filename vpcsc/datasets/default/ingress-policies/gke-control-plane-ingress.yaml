@@ -1,0 +1,35 @@
+# Ingress: GKE control plane communication
+#
+# Compliance:
+#   CIS Benchmarks: CIS GCP 6.x GKE — GKE cluster access through authorized control plane only
+#   SOC 2: CC6.1 Network access controls — controlled exception for managed services
+#   HIPAA: §164.312(e)(1) Transmission security — controlled exception for managed platform traffic
+#
+# GKE control plane runs outside the perimeter in Google-managed infra.
+# Without this rule, kubectl and GKE API calls fail.
+#
+# ARCHITECT TODO:
+# - [ ] Replace PROJECT_NUMBER with actual GKE project number
+#       Run: gcloud projects describe PROJECT_ID --format='value(projectNumber)'
+# - [ ] Verify all GKE environment projects are listed
+
+from:
+  identities:
+  - serviceAccount:service-PROJECT_NUMBER@container-engine-robot.iam.gserviceaccount.com
+  sources:
+  - access_level: '*'
+to:
+  operations:
+  - method_selectors:
+    - '*'
+    service_name: container.googleapis.com
+  - method_selectors:
+    - '*'
+    service_name: compute.googleapis.com
+  - method_selectors:
+    - '*'
+    service_name: artifactregistry.googleapis.com
+  resources:
+  - $project_ids:healthcar-gke-dev-0
+  - $project_ids:healthcar-gke-stg-0
+  - $project_ids:healthcar-gke-prd-0

@@ -1,0 +1,15 @@
+# Access level: Admin group identities
+#
+# Compliance:
+#   CIS Benchmarks: CIS GCP 1.x IAM — enforce separation of duties across admin groups
+#   SOC 2: CC6.1, CC6.3 Role-based access — restrict access based on role requirements
+#   HIPAA: §164.312(a)(1) Access control — role-based access for administrative functions
+#
+# ARCHITECT TODO:
+# - [ ] Verify group emails match actual Workspace groups
+
+description: Administrative identity-based access for org and security admins.
+conditions:
+- members:
+  - $iam_principals:gcp-org-admin
+  - $iam_principals:gcp-security-admin

@@ -1,0 +1,2406 @@
+{
+  "cross_section_summary": {
+    "all_backup_policies": [
+      {
+        "name": "daily-compute-snapshots",
+        "resource_type": "compute_disk",
+        "retention_days": 30
+      },
+      {
+        "name": "daily-sql-backup",
+        "resource_type": "cloud_sql",
+        "retention_days": 30
+      }
+    ],
+    "all_databases": [],
+    "all_gke_clusters": [
+      {
+        "name": "gke-prod",
+        "node_pools": [],
+        "project": "prj-gke",
+        "region": "us-west1",
+        "type": "autopilot"
+      }
+    ],
+    "all_iam_groups": [
+      {
+        "email": "gcp-organization-admins@acme.com",
+        "purpose": "org_admin",
+        "roles": [
+          "roles/resourcemanager.organizationAdmin"
+        ]
+      },
+      {
+        "email": "gcp-billing-admins@acme.com",
+        "purpose": "billing_admin",
+        "roles": [
+          "roles/billing.admin"
+        ]
+      },
+      {
+        "email": "gcp-network-admins@acme.com",
+        "purpose": "network_admin",
+        "roles": [
+          "roles/compute.networkAdmin"
+        ]
+      },
+      {
+        "email": "gcp-security-admins@acme.com",
+        "purpose": "security_admin",
+        "roles": [
+          "roles/iam.securityAdmin"
+        ]
+      }
+    ],
+    "all_projects": [],
+    "all_serverless_services": [
+      {
+        "enabled": true,
+        "ingress": "internal-and-cloud-load-balancing",
+        "type": "cloud_run"
+      },
+      {
+        "enabled": true,
+        "ingress": "ALLOW_INTERNAL_AND_GCLB",
+        "type": "cloud_function"
+      }
+    ],
+    "all_service_accounts": [
+      {
+        "name": "terraform-org-sa",
+        "project": "prj-seed-cicd",
+        "purpose": "terraform",
+        "roles": [
+          "roles/resourcemanager.projectCreator",
+          "roles/resourcemanager.folderAdmin"
+        ]
+      },
+      {
+        "name": "cicd-deploy-sa",
+        "project": "prj-seed-cicd",
+        "purpose": "cicd",
+        "roles": [
+          "roles/clouddeploy.operator",
+          "roles/cloudbuild.builds.editor",
+          "roles/artifactregistry.writer"
+        ]
+      }
+    ],
+    "all_slos": [],
+    "all_vpcs": [
+      {
+        "cidr_blocks": [
+          "10.0.0.0/20"
+        ],
+        "name": "vpc-shared-prod",
+        "project": "prj-network-prod",
+        "purpose": "production"
+      },
+      {
+        "cidr_blocks": [
+          "10.1.0.0/20"
+        ],
+        "name": "vpc-shared-dev",
+        "project": "prj-network-dev",
+        "purpose": "non_production"
+      }
+    ],
+    "cicd_pipelines": [],
+    "compliance_coverage": {},
+    "labeling_requirements": {
+      "enforcement_level": "warn",
+      "required_labels": [
+        "environment",
+        "owner",
+        "cost-center"
+      ]
+    },
+    "security_score": {
+      "by_category": {},
+      "overall": 100
+    },
+    "total_estimated_monthly_cost": 0
+  },
+  "discovery": {
+    "answers": {
+      "audit_retention_years": "7",
+      "availability_target": "99.99",
+      "billing_status": "reseller",
+      "company_name": "Healthcare Provider ",
+      "compliance_requirements": [
+        "soc2",
+        "hipaa",
+        "cis"
+      ],
+      "contact_email": "cloudteam@acme.com",
+      "data_sensitivity": "highly_regulated",
+      "data_services": [
+        "bigquery",
+        "cloud_sql",
+        "firestore",
+        "cloud_storage",
+        "pubsub",
+        "dataflow"
+      ],
+      "dedicated_platform_team": false,
+      "deployment_type": "hybrid",
+      "dr_requirements": "warm",
+      "employee_count": "201-500",
+      "encryption_requirements": "cmek",
+      "engineering_team_size": "21-50",
+      "environment_count": "3",
+      "existing_cicd": [
+        "jenkins",
+        "cloud_build"
+      ],
+      "existing_iac": [
+        "terraform"
+      ],
+      "expected_egress": "moderate",
+      "expected_monthly_spend": "10k_50k",
+      "gcp_experience": "moderate",
+      "gcp_presence": "brownfield",
+      "gke_cluster_type": null,
+      "hybrid_connectivity": "partner_interconnect",
+      "identity_source": "gws",
+      "industry": "healthcare",
+      "labeling_strategy": "minimal",
+      "multi_region_required": true,
+      "naming_convention": "auto",
+      "organization_domain": "acme.com",
+      "partner_interconnect_reason": "security",
+      "primary_region": "us-east1",
+      "primary_workload_type": "mixed",
+      "secondary_region": "us-west1",
+      "terraform_output_mode": "fast",
+      "timeline": "weeks",
+      "workload_types": [
+        "gke",
+        "cloud_run",
+        "cloud_functions",
+        "compute_engine",
+        "dataflow"
+      ]
+    },
+    "compliance_check_requirements": {
+      "field_requirements": [
+        {
+          "field": "kms_configuration.enabled",
+          "operator": "equals",
+          "rationale": "SOC 2 requires logical and physical controls to protect confidential information including encryption key management",
+          "reference": "SOC 2 CC6.1",
+          "section_prefix": "06",
+          "severity": "required",
+          "sources": [
+            "soc2",
+            "hipaa",
+            "cis"
+          ],
+          "value": true
+        },
+        {
+          "field": "audit_logging.data_access.enabled",
+          "operator": "equals",
+          "rationale": "SOC 2 requires comprehensive audit trails capturing all system access and data modifications",
+          "reference": "SOC 2 CC7.1, CC7.2",
+          "section_prefix": "06",
+          "severity": "required",
+          "sources": [
+            "soc2",
+            "hipaa",
+            "cis"
+          ],
+          "value": true
+        },
+        {
+          "field": "audit_logging.retention_days",
+          "operator": "minimum",
+          "rationale": "HIPAA requires 6-year retention of security documentation and audit logs",
+          "reference": "45 CFR 164.530(j)",
+          "section_prefix": "06",
+          "severity": "required",
+          "sources": [
+            "soc2",
+            "hipaa",
+            "cis"
+          ],
+          "value": 2190
+        },
+        {
+          "field": "domain_restricted_sharing.enabled",
+          "operator": "equals",
+          "rationale": "SOC 2 requires access to system resources be restricted to authorized personnel within organizational boundaries",
+          "reference": "SOC 2 CC6.1, CC6.3",
+          "section_prefix": "03",
+          "severity": "required",
+          "sources": [
+            "soc2",
+            "hipaa",
+            "cis"
+          ],
+          "value": true
+        },
+        {
+          "field": "privileged_access_management.enabled",
+          "operator": "equals",
+          "rationale": "Privileged access management supports SOC 2 requirements for access review, least privilege, and segregation of duties",
+          "reference": "SOC 2 CC6.2, CC6.3",
+          "section_prefix": "03",
+          "severity": "recommended",
+          "sources": [
+            "soc2",
+            "hipaa"
+          ],
+          "value": true
+        },
+        {
+          "field": "security_command_center.tier",
+          "operator": "equals",
+          "rationale": "SCC Premium provides continuous security monitoring and vulnerability detection aligned with SOC 2 monitoring requirements",
+          "reference": "SOC 2 CC7.1, CC7.2",
+          "section_prefix": "07",
+          "severity": "required",
+          "sources": [
+            "soc2",
+            "hipaa",
+            "cis"
+          ],
+          "value": "premium"
+        },
+        {
+          "field": "security_command_center.event_threat_detection",
+          "operator": "equals",
+          "rationale": "Event Threat Detection enables real-time identification and alerting on security anomalies per SOC 2 incident response criteria",
+          "reference": "SOC 2 CC7.3, CC7.4",
+          "section_prefix": "07",
+          "severity": "required",
+          "sources": [
+            "soc2",
+            "hipaa"
+          ],
+          "value": true
+        },
+        {
+          "field": "centralized_logging.enabled",
+          "operator": "equals",
+          "rationale": "SOC 2 requires centralized collection and correlation of security events across all system components",
+          "reference": "SOC 2 CC7.1, CC7.2",
+          "section_prefix": "08",
+          "severity": "required",
+          "sources": [
+            "soc2",
+            "hipaa",
+            "cis"
+          ],
+          "value": true
+        },
+        {
+          "field": "log_retention.default_retention_days",
+          "operator": "minimum",
+          "rationale": "HIPAA requires 6-year retention of audit logs",
+          "reference": "45 CFR 164.530(j)",
+          "section_prefix": "08",
+          "severity": "required",
+          "sources": [
+            "soc2",
+            "hipaa",
+            "cis"
+          ],
+          "value": 2190
+        },
+        {
+          "field": "notification_channels",
+          "operator": "not_empty",
+          "rationale": "No notification channels are configured. Security alerts and incident notifications have nowhere to go. At least one channel must be configured for SOC 2 monitoring requirements.",
+          "reference": "SOC 2 CC7.2, CC7.3",
+          "section_prefix": "08",
+          "severity": "required",
+          "sources": [
+            "soc2",
+            "hipaa"
+          ],
+          "value": null
+        },
+        {
+          "field": "dr_strategy.strategy_type",
+          "operator": "not_equals",
+          "rationale": "SOC 2 Availability criteria requires disaster recovery and business continuity planning to ensure system availability commitments",
+          "reference": "SOC 2 A1.2, A1.3",
+          "section_prefix": "10",
+          "severity": "required",
+          "sources": [
+            "soc2",
+            "hipaa"
+          ],
+          "value": "none"
+        },
+        {
+          "field": "cloud_run.default_settings.ingress",
+          "operator": "not_equals",
+          "rationale": "Cloud Run services should restrict ingress to internal traffic and GCLB to support logical access controls and boundary protection",
+          "reference": "SOC 2 CC6.1, CC6.6",
+          "section_prefix": "15",
+          "severity": "recommended",
+          "sources": [
+            "soc2",
+            "hipaa",
+            "cis"
+          ],
+          "value": "all"
+        },
+        {
+          "field": "cloud_functions.default_settings.ingress",
+          "operator": "not_equals",
+          "rationale": "Cloud Functions should restrict ingress to internal traffic and GCLB to support logical access controls and boundary protection",
+          "reference": "SOC 2 CC6.1, CC6.6",
+          "section_prefix": "15",
+          "severity": "recommended",
+          "sources": [
+            "soc2",
+            "hipaa",
+            "cis"
+          ],
+          "value": "ALLOW_ALL"
+        },
+        {
+          "field": "kms_configuration.default_encryption.cloud_storage",
+          "operator": "equals",
+          "rationale": "Cloud Storage buckets containing ePHI must use CMEK",
+          "reference": "HIPAA Security Rule 164.312(a)(2)(iv)",
+          "section_prefix": "06",
+          "severity": "required",
+          "sources": [
+            "hipaa"
+          ],
+          "value": true
+        },
+        {
+          "field": "kms_configuration.default_encryption.bigquery",
+          "operator": "equals",
+          "rationale": "BigQuery datasets containing ePHI must use CMEK",
+          "reference": "HIPAA Security Rule 164.312(a)(2)(iv)",
+          "section_prefix": "06",
+          "severity": "required",
+          "sources": [
+            "hipaa"
+          ],
+          "value": true
+        },
+        {
+          "field": "kms_configuration.default_encryption.cloud_sql",
+          "operator": "equals",
+          "rationale": "Cloud SQL databases containing ePHI must use CMEK",
+          "reference": "HIPAA Security Rule 164.312(a)(2)(iv)",
+          "section_prefix": "06",
+          "severity": "required",
+          "sources": [
+            "hipaa"
+          ],
+          "value": true
+        },
+        {
+          "field": "access_transparency.enabled",
+          "operator": "equals",
+          "rationale": "HIPAA requires visibility into cloud provider access to ePHI",
+          "reference": "HIPAA Security Rule 164.312(b)",
+          "section_prefix": "06",
+          "severity": "required",
+          "sources": [
+            "hipaa"
+          ],
+          "value": true
+        },
+        {
+          "field": "data_classification_config.enabled",
+          "operator": "equals",
+          "rationale": "HIPAA requires identification and classification of ePHI data",
+          "reference": "HIPAA Security Rule 164.308(a)(1)(ii)(A)",
+          "section_prefix": "06",
+          "severity": "required",
+          "sources": [
+            "hipaa",
+            "cis"
+          ],
+          "value": true
+        },
+        {
+          "field": "kms_configuration.default_encryption.firestore",
+          "operator": "equals",
+          "rationale": "Firestore databases containing ePHI must use CMEK",
+          "reference": "HIPAA Security Rule 164.312(a)(2)(iv)",
+          "section_prefix": "06",
+          "severity": "required",
+          "sources": [
+            "hipaa"
+          ],
+          "value": true
+        },
+        {
+          "field": "kms_configuration.default_encryption.gke_secrets",
+          "operator": "equals",
+          "rationale": "GKE secrets containing ePHI must use application-layer encryption",
+          "reference": "HIPAA Security Rule 164.312(a)(2)(iv)",
+          "section_prefix": "06",
+          "severity": "required",
+          "sources": [
+            "hipaa"
+          ],
+          "value": true
+        },
+        {
+          "field": "data_residency_config.assured_workloads.enabled",
+          "operator": "equals",
+          "rationale": "Assured Workloads provides Google-managed compliance controls for HIPAA, ensuring BAA-covered services and data handling requirements are enforced",
+          "reference": "HIPAA Administrative Safeguards 164.308(a)(1)",
+          "section_prefix": "06",
+          "severity": "required",
+          "sources": [
+            "hipaa"
+          ],
+          "value": true
+        },
+        {
+          "field": "vpc_service_controls.enabled",
+          "operator": "equals",
+          "rationale": "VPC Service Controls prevent PHI data exfiltration",
+          "reference": "HIPAA Security Rule 164.312(e)(1)",
+          "section_prefix": "07",
+          "severity": "required",
+          "sources": [
+            "hipaa"
+          ],
+          "value": true
+        },
+        {
+          "field": "dlp_configuration.enabled",
+          "operator": "equals",
+          "rationale": "DLP scanning detects and protects PHI across cloud resources",
+          "reference": "HIPAA Security Rule 164.312(c)(1)",
+          "section_prefix": "07",
+          "severity": "required",
+          "sources": [
+            "hipaa"
+          ],
+          "value": true
+        },
+        {
+          "field": "bigquery_config.cmek_enabled",
+          "operator": "equals",
+          "rationale": "BigQuery datasets containing ePHI must use CMEK encryption",
+          "reference": "HIPAA Security Rule 164.312(a)(2)(iv)",
+          "section_prefix": "13",
+          "severity": "required",
+          "sources": [
+            "hipaa",
+            "cis"
+          ],
+          "value": true
+        },
+        {
+          "field": "cloud_storage_config.cmek_enabled",
+          "operator": "equals",
+          "rationale": "Cloud Storage buckets containing ePHI must use CMEK encryption",
+          "reference": "HIPAA Security Rule 164.312(a)(2)(iv)",
+          "section_prefix": "13",
+          "severity": "required",
+          "sources": [
+            "hipaa",
+            "cis"
+          ],
+          "value": true
+        },
+        {
+          "field": "cloud_sql_config.cmek_enabled",
+          "operator": "equals",
+          "rationale": "Cloud SQL databases containing ePHI must use CMEK encryption",
+          "reference": "HIPAA Security Rule 164.312(a)(2)(iv)",
+          "section_prefix": "13",
+          "severity": "required",
+          "sources": [
+            "hipaa",
+            "cis"
+          ],
+          "value": true
+        },
+        {
+          "field": "firestore_config.cmek_enabled",
+          "operator": "equals",
+          "rationale": "Firestore databases containing ePHI must use CMEK encryption",
+          "reference": "HIPAA Security Rule 164.312(a)(2)(iv)",
+          "section_prefix": "13",
+          "severity": "required",
+          "sources": [
+            "hipaa"
+          ],
+          "value": true
+        },
+        {
+          "field": "pubsub_config.cmek_enabled",
+          "operator": "equals",
+          "rationale": "Pub/Sub topics carrying ePHI messages must use CMEK encryption",
+          "reference": "HIPAA Security Rule 164.312(a)(2)(iv)",
+          "section_prefix": "13",
+          "severity": "required",
+          "sources": [
+            "hipaa"
+          ],
+          "value": true
+        },
+        {
+          "field": "dataflow_config.cmek_enabled",
+          "operator": "equals",
+          "rationale": "Dataflow jobs processing ePHI must use CMEK encryption",
+          "reference": "HIPAA Security Rule 164.312(a)(2)(iv)",
+          "section_prefix": "13",
+          "severity": "required",
+          "sources": [
+            "hipaa"
+          ],
+          "value": true
+        },
+        {
+          "field": "service_account_key_policy",
+          "operator": "equals",
+          "rationale": "CIS requires restricting service account key creation and usage; prefer Workload Identity and short-lived tokens over exported keys",
+          "reference": "CIS GCP 1.4, 1.5, 1.6",
+          "section_prefix": "03",
+          "severity": "required",
+          "sources": [
+            "cis"
+          ],
+          "value": "deny_all"
+        },
+        {
+          "field": "private_google_access_config.enable_private_google_access",
+          "operator": "equals",
+          "rationale": "CIS requires enabling Private Google Access on all subnets so VM instances without external IPs can reach Google APIs without traversing the public internet",
+          "reference": "CIS GCP 3.8",
+          "section_prefix": "04",
+          "severity": "required",
+          "sources": [
+            "cis"
+          ],
+          "value": true
+        },
+        {
+          "field": "cloud_dns.dnssec.enabled",
+          "operator": "equals",
+          "rationale": "CIS recommends DNSSEC to protect against DNS spoofing and ensure DNS response integrity",
+          "reference": "CIS GCP 3.x",
+          "section_prefix": "04",
+          "severity": "recommended",
+          "sources": [
+            "cis"
+          ],
+          "value": true
+        },
+        {
+          "field": "binary_authorization.enabled",
+          "operator": "equals",
+          "rationale": "CIS recommends Binary Authorization to enforce deploy-time image attestation policies ensuring only trusted, scanned container images run on GKE clusters",
+          "reference": "CIS GCP 8.5",
+          "section_prefix": "07",
+          "severity": "recommended",
+          "sources": [
+            "cis"
+          ],
+          "value": true
+        }
+      ],
+      "frameworks": [
+        "soc2",
+        "hipaa",
+        "cis"
+      ],
+      "is_baseline": false,
+      "org_policy_requirements": [
+        {
+          "constraint": "iam.disableServiceAccountKeyCreation",
+          "enforcement": "enforce",
+          "rationale": "Prevents unmanaged service account keys that undermine access control governance",
+          "severity": "required",
+          "sources": [
+            "soc2",
+            "hipaa",
+            "cis"
+          ]
+        },
+        {
+          "constraint": "compute.requireShieldedVm",
+          "enforcement": "enforce",
+          "rationale": "Shielded VMs protect compute instances from boot-level and firmware attacks",
+          "severity": "required",
+          "sources": [
+            "soc2",
+            "cis"
+          ]
+        },
+        {
+          "constraint": "compute.disableSerialPortAccess",
+          "enforcement": "enforce",
+          "rationale": "Serial port access represents an unaudited access path that bypasses IAM controls",
+          "severity": "required",
+          "sources": [
+            "soc2",
+            "cis"
+          ]
+        },
+        {
+          "constraint": "compute.requireOsLogin",
+          "enforcement": "enforce",
+          "rationale": "CIS requires OS Login to replace SSH key-based authentication with centralized IAM-based SSH access management including MFA support",
+          "severity": "required",
+          "sources": [
+            "cis"
+          ]
+        },
+        {
+          "constraint": "compute.disableNestedVirtualization",
+          "enforcement": "enforce",
+          "rationale": "CIS recommends disabling nested virtualization to reduce attack surface and prevent potential hypervisor escape vectors",
+          "severity": "recommended",
+          "sources": [
+            "cis"
+          ]
+        },
+        {
+          "constraint": "compute.vmExternalIpAccess",
+          "enforcement": "enforce",
+          "rationale": "CIS recommends restricting external IP assignment to VMs to minimize public attack surface and enforce NAT-based egress",
+          "severity": "recommended",
+          "sources": [
+            "cis"
+          ]
+        }
+      ]
+    },
+    "derived_flags": {
+      "cicd_platform": "none",
+      "compliance_frameworks": [
+        "soc2",
+        "hipaa",
+        "cis"
+      ],
+      "connectivity_type": "partner_interconnect",
+      "dr_strategy": "warm",
+      "encryption_type": "cmek",
+      "has_backup_requirements": true,
+      "has_bigquery": false,
+      "has_cicd_pipelines": false,
+      "has_cloud_sql": false,
+      "has_compliance_requirements": true,
+      "has_data_platform": false,
+      "has_gke_workloads": true,
+      "has_hybrid_connectivity": true,
+      "has_pubsub": false,
+      "has_serverless_workloads": true,
+      "has_slo_requirements": false,
+      "iac_tool": "terraform",
+      "identity_provider": "google_workspace",
+      "is_multi_region": true,
+      "regions": [
+        "us-east1"
+      ],
+      "target_availability": "99.99"
+    },
+    "profile_was_overridden": false,
+    "recommended_profile": "standard",
+    "selected_profile": "standard",
+    "wizard_mode": "guided"
+  },
+  "generation_hints": {
+    "diagrams": {
+      "detail_level": "detailed",
+      "format": "mermaid"
+    },
+    "documentation": {
+      "format": "markdown",
+      "include_compliance_mapping": true,
+      "include_diagrams": true
+    },
+    "terraform": {
+      "backend_type": "gcs",
+      "module_source_preference": "fabric_fast",
+      "split_by": "section",
+      "use_fabric_fast": true
+    }
+  },
+  "metadata": {
+    "account": "boristep@googlemail.com",
+    "generated_at": "2026-02-22T10:15:40.581203Z",
+    "org_id": "acme-corporation",
+    "profile": "standard",
+    "schema_version": "3.0.0",
+    "spec_id": "36dbf2c1-d245-464c-88df-2624640c5c2a",
+    "spec_name": "Healthcare Provider ",
+    "task_id": "acme-lz4",
+    "version": 1,
+    "wizard_mode": "guided",
+    "wizard_version": "1.0.0"
+  },
+  "sections": {
+    "01_metadata": {
+      "completion_status": "complete",
+      "diagram_elements": [],
+      "enabled": true,
+      "field_sources": {
+        "billing_account_id": "profile_default",
+        "compliance_frameworks": "user_input",
+        "created_date": "user_input",
+        "default_labels": "profile_default",
+        "documentation_url": "user_input",
+        "environment_type": "profile_default",
+        "landing_zone_description": "user_input",
+        "landing_zone_name": "user_input",
+        "organization_domain": "user_input",
+        "organization_id": "profile_default",
+        "primary_contact_email": "user_input",
+        "primary_region": "user_input",
+        "secondary_contact_email": "user_input",
+        "secondary_region": "user_input",
+        "support_channel": "user_input",
+        "terraform_state_bucket": "user_input",
+        "version": "profile_default"
+      },
+      "mode_used": "guided",
+      "section_id": "01_metadata",
+      "terraform_resources": [],
+      "title": "Foundation Metadata",
+      "values": {
+        "billing_account_id": "",
+        "compliance_frameworks": [
+          "cis",
+          "soc2",
+          "hipaa"
+        ],
+        "created_date": "2026-02-21",
+        "default_labels": [
+          {
+            "key": "environment",
+            "required": true,
+            "value": "prod"
+          },
+          {
+            "key": "owner",
+            "required": true,
+            "value": "platform-team"
+          },
+          {
+            "key": "cost-center",
+            "required": false,
+            "value": "shared-services"
+          }
+        ],
+        "documentation_url": "",
+        "environment_type": "multi_env",
+        "landing_zone_description": "A hospital network moving EHR analytics and patient portal to GCP",
+        "landing_zone_name": "healthcare-provider-acme",
+        "organization_domain": "acme.com",
+        "organization_id": "",
+        "primary_contact_email": "cloudteam@acme.com",
+        "primary_region": "us-east1",
+        "secondary_contact_email": "",
+        "secondary_region": "us-west1",
+        "support_channel": "",
+        "terraform_state_bucket": "",
+        "version": "1.0.0"
+      }
+    },
+    "02_resource_hierarchy": {
+      "completion_status": "complete",
+      "diagram_elements": [],
+      "enabled": true,
+      "field_sources": {
+        "bootstrap_projects": "profile_default",
+        "enable_nested_folders": "profile_default",
+        "environment_configurations": "profile_default",
+        "hierarchy_type": "profile_default",
+        "project_factory_enabled": "profile_default",
+        "project_id_prefix": "user_input",
+        "project_naming_convention": "profile_default",
+        "project_quota_defaults": "user_input",
+        "top_level_folders": "profile_default"
+      },
+      "mode_used": "guided",
+      "section_id": "02_resource_hierarchy",
+      "terraform_resources": [],
+      "title": "Resource Hierarchy",
+      "values": {
+        "bootstrap_projects": [
+          {
+            "apis": [
+              "cloudbuild.googleapis.com",
+              "artifactregistry.googleapis.com"
+            ],
+            "folder": "Shared Services",
+            "name": "prj-seed-cicd",
+            "purpose": "cicd"
+          },
+          {
+            "apis": [
+              "logging.googleapis.com"
+            ],
+            "folder": "Security",
+            "name": "prj-seed-logging",
+            "purpose": "logging"
+          },
+          {
+            "apis": [
+              "compute.googleapis.com",
+              "servicenetworking.googleapis.com"
+            ],
+            "folder": "Shared Services",
+            "name": "prj-seed-networking",
+            "purpose": "networking"
+          }
+        ],
+        "enable_nested_folders": false,
+        "environment_configurations": [
+          {
+            "approval_required": false,
+            "folder": "Development",
+            "is_production": false,
+            "name": "Development",
+            "short_code": "dev"
+          },
+          {
+            "approval_required": true,
+            "folder": "Staging",
+            "is_production": false,
+            "name": "Staging",
+            "short_code": "stg"
+          },
+          {
+            "approval_required": true,
+            "folder": "Production",
+            "is_production": true,
+            "name": "Production",
+            "short_code": "prd"
+          }
+        ],
+        "hierarchy_type": "team_based",
+        "project_factory_enabled": true,
+        "project_id_prefix": "healthcare",
+        "project_naming_convention": "{prefix}-{env}-{team}-{purpose}",
+        "project_quota_defaults": {
+          "default_compute_quota": 24,
+          "max_projects_per_folder": 50
+        },
+        "top_level_folders": [
+          {
+            "description": "Production workloads",
+            "name": "Production",
+            "purpose": "environment"
+          },
+          {
+            "description": "Pre-production testing",
+            "name": "Staging",
+            "purpose": "environment"
+          },
+          {
+            "description": "Development",
+            "name": "Development",
+            "purpose": "environment"
+          },
+          {
+            "description": "Common infrastructure",
+            "name": "Shared Services",
+            "purpose": "shared_services"
+          },
+          {
+            "description": "Security tooling",
+            "name": "Security",
+            "purpose": "security"
+          }
+        ]
+      }
+    },
+    "03_iam_model": {
+      "completion_status": "complete",
+      "diagram_elements": [],
+      "enabled": true,
+      "field_sources": {
+        "admin_groups": "user_input",
+        "api_key_policy": "profile_default",
+        "domain_restricted_sharing": "user_input",
+        "external_idp_config": "profile_default",
+        "iam_recommender": "user_input",
+        "identity_provider": "profile_default",
+        "privileged_access_management": "user_input",
+        "service_account_key_policy": "profile_default",
+        "service_accounts": "user_input",
+        "workload_identity_federation": "user_input"
+      },
+      "mode_used": "guided",
+      "section_id": "03_iam_model",
+      "terraform_resources": [],
+      "title": "IAM Model",
+      "values": {
+        "admin_groups": [
+          {
+            "description": "Organization administrators",
+            "name": "gcp-organization-admins@acme.com",
+            "purpose": "org_admin",
+            "roles": [
+              "roles/resourcemanager.organizationAdmin"
+            ]
+          },
+          {
+            "description": "Billing management",
+            "name": "gcp-billing-admins@acme.com",
+            "purpose": "billing_admin",
+            "roles": [
+              "roles/billing.admin"
+            ]
+          },
+          {
+            "description": "Network management",
+            "name": "gcp-network-admins@acme.com",
+            "purpose": "network_admin",
+            "roles": [
+              "roles/compute.networkAdmin"
+            ]
+          },
+          {
+            "description": "Security management",
+            "name": "gcp-security-admins@acme.com",
+            "purpose": "security_admin",
+            "roles": [
+              "roles/iam.securityAdmin"
+            ]
+          }
+        ],
+        "api_key_policy": {
+          "require_api_restrictions": true,
+          "require_application_restrictions": false,
+          "restrict_creation": false,
+          "rotation_days": 90
+        },
+        "domain_restricted_sharing": {
+          "allow_google_managed": true,
+          "allowed_domains": [],
+          "enabled": true
+        },
+        "external_idp_config": {
+          "domain": "",
+          "federation_type": "saml",
+          "idp_type": "okta"
+        },
+        "iam_recommender": {
+          "auto_apply": false,
+          "enabled": true,
+          "notification_email": ""
+        },
+        "identity_provider": "google_workspace",
+        "privileged_access_management": {
+          "approval_required": true,
+          "enabled": true,
+          "justification_required": true,
+          "max_request_duration": "4h"
+        },
+        "service_account_key_policy": "deny_all",
+        "service_accounts": [
+          {
+            "disable_key_creation": true,
+            "display_name": "Terraform Organization",
+            "impersonators": [
+              "group:gcp-organization-admins@acme.com"
+            ],
+            "name": "terraform-org-sa",
+            "project": "prj-seed-cicd",
+            "purpose": "terraform",
+            "roles": [
+              "roles/resourcemanager.projectCreator",
+              "roles/resourcemanager.folderAdmin"
+            ]
+          },
+          {
+            "disable_key_creation": true,
+            "display_name": "CI/CD Deployment",
+            "name": "cicd-deploy-sa",
+            "project": "prj-seed-cicd",
+            "purpose": "cicd",
+            "roles": [
+              "roles/clouddeploy.operator",
+              "roles/cloudbuild.builds.editor",
+              "roles/artifactregistry.writer"
+            ]
+          }
+        ],
+        "workload_identity_federation": {
+          "enabled": true,
+          "pools": []
+        }
+      }
+    },
+    "04_networking": {
+      "completion_status": "complete",
+      "diagram_elements": [],
+      "enabled": true,
+      "field_sources": {
+        "cloud_dns": "user_input",
+        "firewall_baseline_rules": "user_input",
+        "firewall_policy_type": "profile_default",
+        "private_google_access_config": "profile_default",
+        "subnets": "user_input",
+        "vpc_architecture": "profile_default",
+        "vpc_networks": "profile_default"
+      },
+      "mode_used": "guided",
+      "section_id": "04_networking",
+      "terraform_resources": [],
+      "title": "Networking",
+      "values": {
+        "cloud_dns": {
+          "dnssec": {
+            "enabled": true,
+            "key_algorithm": "ecdsap256sha256"
+          },
+          "enable_dns_logging": true,
+          "inbound_forwarding": false,
+          "outbound_forwarding": {
+            "enabled": false
+          },
+          "private_zones": [],
+          "response_policy": {
+            "enabled": false
+          }
+        },
+        "firewall_baseline_rules": [
+          {
+            "action": "allow",
+            "description": "Allow internal RFC1918 traffic",
+            "direction": "INGRESS",
+            "logging": false,
+            "name": "allow-internal",
+            "priority": 1000,
+            "protocols_ports": [
+              {
+                "ports": null,
+                "protocol": "all"
+              }
+            ],
+            "source_ranges": [
+              "10.0.0.0/8",
+              "172.16.0.0/12",
+              "192.168.0.0/16"
+            ]
+          },
+          {
+            "action": "allow",
+            "description": "Allow SSH via IAP",
+            "direction": "INGRESS",
+            "logging": true,
+            "name": "allow-iap-ssh",
+            "priority": 1000,
+            "protocols_ports": [
+              {
+                "ports": [
+                  "22"
+                ],
+                "protocol": "tcp"
+              }
+            ],
+            "source_ranges": [
+              "35.235.240.0/20"
+            ],
+            "target_tags": [
+              "allow-iap"
+            ]
+          },
+          {
+            "action": "allow",
+            "description": "Allow GCP health check ranges",
+            "direction": "INGRESS",
+            "logging": false,
+            "name": "allow-health-checks",
+            "priority": 1000,
+            "protocols_ports": [
+              {
+                "ports": null,
+                "protocol": "tcp"
+              }
+            ],
+            "source_ranges": [
+              "35.191.0.0/16",
+              "130.211.0.0/22"
+            ]
+          },
+          {
+            "action": "deny",
+            "description": "Deny all egress by default",
+            "destination_ranges": [
+              "0.0.0.0/0"
+            ],
+            "direction": "EGRESS",
+            "logging": true,
+            "name": "deny-all-egress",
+            "priority": 65535,
+            "protocols_ports": [
+              {
+                "ports": null,
+                "protocol": "all"
+              }
+            ]
+          }
+        ],
+        "firewall_policy_type": "hierarchical_policies",
+        "private_google_access_config": {
+          "enable_private_google_access": true,
+          "private_service_connect": false,
+          "restricted_api_access": false
+        },
+        "subnets": [
+          {
+            "flow_logs": true,
+            "flow_logs_config": {
+              "aggregation_interval": "INTERVAL_5_MIN",
+              "flow_sampling": 0.5,
+              "metadata": "INCLUDE_ALL_METADATA"
+            },
+            "ip_cidr_range": "10.0.0.0/20",
+            "name": "sb-prod-us-east1",
+            "private_google_access": true,
+            "purpose": "general",
+            "region": "us-east1",
+            "vpc": "vpc-shared-prod"
+          },
+          {
+            "flow_logs": true,
+            "flow_logs_config": {
+              "aggregation_interval": "INTERVAL_5_MIN",
+              "flow_sampling": 0.5,
+              "metadata": "INCLUDE_ALL_METADATA"
+            },
+            "ip_cidr_range": "10.1.0.0/20",
+            "name": "sb-dev-us-east1",
+            "private_google_access": true,
+            "purpose": "general",
+            "region": "us-east1",
+            "vpc": "vpc-shared-dev"
+          }
+        ],
+        "vpc_architecture": "shared_vpc",
+        "vpc_networks": [
+          {
+            "delete_default_routes": false,
+            "description": "Shared VPC for production",
+            "mtu": "1460",
+            "name": "vpc-shared-prod",
+            "project": "prj-network-prod",
+            "purpose": "production",
+            "routing_mode": "GLOBAL"
+          },
+          {
+            "delete_default_routes": false,
+            "description": "Shared VPC for development",
+            "mtu": "1460",
+            "name": "vpc-shared-dev",
+            "project": "prj-network-dev",
+            "purpose": "non_production",
+            "routing_mode": "GLOBAL"
+          }
+        ]
+      }
+    },
+    "05_hybrid_connectivity": {
+      "completion_status": "complete",
+      "diagram_elements": [],
+      "enabled": true,
+      "field_sources": {
+        "cloud_routers": "user_input",
+        "connectivity_type": "user_input",
+        "hybrid_dns": "profile_default",
+        "interconnect_configuration": "user_input",
+        "network_connectivity_center": "profile_default",
+        "on_premises_networks": "user_input",
+        "vpn_configuration": "user_input"
+      },
+      "mode_used": "guided",
+      "section_id": "05_hybrid_connectivity",
+      "terraform_resources": [
+        "google_compute_interconnect_attachment",
+        "net-vpn-ha"
+      ],
+      "title": "Hybrid Connectivity",
+      "values": {
+        "cloud_routers": [
+          {
+            "advertise_mode": "DEFAULT",
+            "asn": 64512,
+            "name": "router-prod",
+            "region": "us-east1",
+            "vpc": "vpc-shared-prod"
+          }
+        ],
+        "connectivity_type": "partner_interconnect",
+        "hybrid_dns": {
+          "enabled": true,
+          "inbound_forwarding": true
+        },
+        "interconnect_configuration": {
+          "connections": [
+            {
+              "bandwidth": "BPS_10G",
+              "location": "ash-zone1-6",
+              "name": "interconnect-prod-primary",
+              "redundancy": "METRO",
+              "type": "DEDICATED"
+            }
+          ],
+          "vlan_attachments": [
+            {
+              "interconnect": "interconnect-prod-primary",
+              "mtu": "1440",
+              "name": "vlan-attach-prod",
+              "region": "us-east1",
+              "router": "router-prod",
+              "vlan_id": null
+            }
+          ]
+        },
+        "network_connectivity_center": {
+          "enabled": false,
+          "hub_name": "ncc-hub-global",
+          "spoke_types": [
+            "vpc",
+            "vpn"
+          ]
+        },
+        "on_premises_networks": [
+          {
+            "cidr_ranges": [
+              "192.20.0.0/20"
+            ],
+            "dns_domain": "acme.internal",
+            "dns_servers": [
+              "192.20.0.53"
+            ],
+            "name": "on-prem-network"
+          }
+        ],
+        "vpn_configuration": {
+          "bgp_config": {
+            "advertised_routes": "DEFAULT",
+            "cloud_router_asn": 64512,
+            "peer_asn": 65001
+          },
+          "ike_version": "2",
+          "routing_type": "dynamic",
+          "vpn_type": "ha_vpn"
+        }
+      }
+    },
+    "06_security_baseline": {
+      "completion_status": "complete",
+      "diagram_elements": [],
+      "enabled": true,
+      "field_sources": {
+        "access_transparency": "user_input",
+        "audit_logging": "user_input",
+        "compliance_standard": "user_input",
+        "data_classification_config": "user_input",
+        "data_residency_config": "user_input",
+        "kms_configuration": "user_input",
+        "organization_policies": "user_input",
+        "security_contacts": "profile_default"
+      },
+      "mode_used": "guided",
+      "section_id": "06_security_baseline",
+      "terraform_resources": [
+        "organization-policy"
+      ],
+      "title": "Security Baseline",
+      "values": {
+        "access_transparency": {
+          "access_approval": false,
+          "enabled": true
+        },
+        "audit_logging": {
+          "admin_activity": true,
+          "data_access": {
+            "enabled": true,
+            "log_types": [
+              "ADMIN_READ",
+              "DATA_WRITE"
+            ]
+          },
+          "log_sink_destination": "bigquery",
+          "retention_days": 2190,
+          "sink_project": ""
+        },
+        "compliance_standard": "hipaa",
+        "data_classification_config": {
+          "classification_tiers": [
+            {
+              "encryption_required": "google_managed",
+              "require_access_logging": true,
+              "require_vpc_sc": false,
+              "tier": "internal"
+            },
+            {
+              "encryption_required": "google_managed",
+              "require_access_logging": true,
+              "require_vpc_sc": false,
+              "tier": "confidential"
+            }
+          ],
+          "enabled": true
+        },
+        "data_residency_config": {
+          "access_approval": {
+            "enabled": false
+          },
+          "allowed_locations": [],
+          "assured_workloads": {
+            "compliance_regime": "HIPAA",
+            "enabled": true
+          },
+          "enforce_resource_locations": false
+        },
+        "kms_configuration": {
+          "default_encryption": {
+            "bigquery": true,
+            "cloud_sql": true,
+            "cloud_storage": true,
+            "compute_disks": true,
+            "dataflow": false,
+            "firestore": true,
+            "gke_secrets": true,
+            "pubsub": true
+          },
+          "enabled": true,
+          "key_project": "prj-seed-kms"
+        },
+        "organization_policies": [
+          {
+            "constraint": "compute.skipDefaultNetworkCreation",
+            "enforcement": "enforce",
+            "scope": "organization"
+          },
+          {
+            "constraint": "compute.requireOsLogin",
+            "enforcement": "enforce",
+            "scope": "organization"
+          },
+          {
+            "constraint": "compute.requireShieldedVm",
+            "enforcement": "enforce",
+            "scope": "organization"
+          },
+          {
+            "constraint": "compute.disableSerialPortAccess",
+            "enforcement": "enforce",
+            "scope": "organization"
+          },
+          {
+            "constraint": "compute.disableNestedVirtualization",
+            "enforcement": "enforce",
+            "scope": "organization"
+          },
+          {
+            "constraint": "compute.vmExternalIpAccess",
+            "enforcement": "deny_all",
+            "exceptions": [
+              "prj-bastion"
+            ],
+            "scope": "organization"
+          },
+          {
+            "constraint": "storage.uniformBucketLevelAccess",
+            "enforcement": "enforce",
+            "scope": "organization"
+          },
+          {
+            "constraint": "storage.publicAccessPrevention",
+            "enforcement": "enforce",
+            "scope": "organization"
+          },
+          {
+            "constraint": "sql.restrictPublicIp",
+            "enforcement": "enforce",
+            "scope": "organization"
+          },
+          {
+            "constraint": "iam.disableServiceAccountKeyCreation",
+            "enforcement": "enforce",
+            "exceptions": [
+              "prj-seed-cicd"
+            ],
+            "scope": "organization"
+          }
+        ],
+        "security_contacts": []
+      }
+    },
+    "07_advanced_security": {
+      "completion_status": "complete",
+      "diagram_elements": [],
+      "enabled": true,
+      "field_sources": {
+        "binary_authorization": "user_input",
+        "certificate_authority_service": "user_input",
+        "cloud_armor": "user_input",
+        "dlp_configuration": "user_input",
+        "incident_response_config": "profile_default",
+        "security_command_center": "user_input",
+        "vpc_service_controls": "user_input",
+        "vulnerability_management": "user_input"
+      },
+      "mode_used": "guided",
+      "section_id": "07_advanced_security",
+      "terraform_resources": [
+        "google_access_context_manager_service_perimeter",
+        "google_compute_security_policy",
+        "google_data_loss_prevention_inspect_template",
+        "google_privateca_ca_pool",
+        "terraform-google-modules/security",
+        "google_binary_authorization_policy",
+        "google_scc_organization_settings"
+      ],
+      "title": "Advanced Security",
+      "values": {
+        "binary_authorization": {
+          "attestors": [
+            {
+              "name": "attestor-new",
+              "note_reference": "projects/YOUR_PROJECT/notes/YOUR_NOTE"
+            }
+          ],
+          "enabled": true,
+          "evaluation_mode": "REQUIRE_ATTESTATION"
+        },
+        "certificate_authority_service": {
+          "enabled": false
+        },
+        "cloud_armor": {
+          "enabled": true,
+          "policies": [
+            {
+              "adaptive_protection": false,
+              "default_action": "allow",
+              "name": "armor-policy-new",
+              "preconfigured_waf_rules": [
+                "sqli-v33-stable",
+                "xss-v33-stable",
+                "lfi-v33-stable",
+                "rfi-v33-stable"
+              ],
+              "type": "CLOUD_ARMOR"
+            }
+          ]
+        },
+        "dlp_configuration": {
+          "enabled": true,
+          "inspect_templates": [
+            {
+              "info_types": [
+                "EMAIL_ADDRESS",
+                "PERSON_NAME",
+                "STREET_ADDRESS",
+                "DATE_OF_BIRTH",
+                "PASSPORT",
+                "US_DRIVERS_LICENSE_NUMBER",
+                "MEDICAL_RECORD_NUMBER",
+                "US_HEALTHCARE_NPI"
+              ],
+              "min_likelihood": "LIKELY",
+              "name": "dlp-template-new"
+            }
+          ]
+        },
+        "incident_response_config": {
+          "auto_response_actions": [],
+          "enabled": false,
+          "notification_channels": [
+            "email"
+          ]
+        },
+        "security_command_center": {
+          "container_threat_detection": false,
+          "event_threat_detection": true,
+          "findings_export": {
+            "destination": "bigquery",
+            "enabled": true
+          },
+          "security_health_analytics": true,
+          "tier": "premium",
+          "virtual_machine_threat_detection": false,
+          "vulnerability_scanning": true,
+          "web_security_scanner": false
+        },
+        "vpc_service_controls": {
+          "access_policy_name": "org-access-policy",
+          "dry_run_mode": true,
+          "enabled": true
+        },
+        "vulnerability_management": {
+          "auto_remediation": false,
+          "enabled": false
+        }
+      }
+    },
+    "08_logging_monitoring": {
+      "completion_status": "complete",
+      "diagram_elements": [],
+      "enabled": true,
+      "field_sources": {
+        "alerting_policies": "profile_default",
+        "centralized_logging": "user_input",
+        "dashboards": "profile_default",
+        "log_retention": "user_input",
+        "monitoring_workspace": "user_input",
+        "notification_channels": "user_input"
+      },
+      "mode_used": "guided",
+      "section_id": "08_logging_monitoring",
+      "terraform_resources": [
+        "google_monitoring_alert_policy",
+        "google_monitoring_dashboard",
+        "google_monitoring_notification_channel",
+        "google_logging_organization_sink",
+        "google_monitoring_monitored_project",
+        "terraform-google-modules/log-export",
+        "google_monitoring_uptime_check_config",
+        "google_logging_project_bucket_config"
+      ],
+      "title": "Logging & Monitoring",
+      "values": {
+        "alerting_policies": [
+          {
+            "category": "infrastructure",
+            "duration": 300,
+            "metric_type": "compute.googleapis.com/instance/cpu/utilization",
+            "name": "High CPU",
+            "notification_channels": [
+              "email",
+              "slack"
+            ],
+            "threshold": 80
+          },
+          {
+            "category": "security",
+            "duration": 60,
+            "metric_type": "logging.googleapis.com/user/security_event",
+            "name": "Security Event",
+            "notification_channels": [
+              "email",
+              "slack"
+            ],
+            "threshold": 1
+          }
+        ],
+        "centralized_logging": {
+          "aggregated_sinks": [
+            {
+              "destination_type": "bigquery",
+              "filter": "logName:\"cloudaudit.googleapis.com\"",
+              "include_children": true,
+              "name": "org-audit-sink"
+            }
+          ],
+          "enabled": true,
+          "logging_project": "prj-seed-logging"
+        },
+        "dashboards": [
+          {
+            "name": "Infrastructure Overview",
+            "template": "gcp_default",
+            "type": "infrastructure"
+          },
+          {
+            "name": "GKE Cluster",
+            "template": "gcp_default",
+            "type": "gke"
+          },
+          {
+            "name": "Cost Overview",
+            "template": "gcp_default",
+            "type": "cost"
+          }
+        ],
+        "log_retention": {
+          "custom_retention_buckets": [
+            {
+              "locked": false,
+              "name": "audit-logs",
+              "retention_days": 365
+            }
+          ],
+          "default_retention_days": 2190
+        },
+        "monitoring_workspace": {
+          "monitored_projects": "all",
+          "workspace_project": "prj-monitoring"
+        },
+        "notification_channels": [
+          {
+            "config": {
+              "email_address": "cloudteam@acme.com",
+              "slack_channel": "",
+              "webhook_url": ""
+            },
+            "name": "primary-contact",
+            "type": "email"
+          }
+        ]
+      }
+    },
+    "09_cost_management": {
+      "completion_status": "complete",
+      "diagram_elements": [],
+      "enabled": true,
+      "field_sources": {
+        "billing_export": "user_input",
+        "budgets": "profile_default",
+        "committed_use_discounts": "user_input",
+        "cost_allocation": "user_input",
+        "cost_optimization_policies": "user_input",
+        "quota_monitoring": "user_input"
+      },
+      "mode_used": "guided",
+      "section_id": "09_cost_management",
+      "terraform_resources": [
+        "google_bigquery_dataset",
+        "google_monitoring_alert_policy",
+        "terraform-google-modules/billing-budget",
+        "google_compute_region_commitment",
+        "google_organization_policy",
+        "google_billing_budget",
+        "google_project_service"
+      ],
+      "title": "Cost Management",
+      "values": {
+        "billing_export": {
+          "dataset_name": "",
+          "dataset_project": "",
+          "destination": "bigquery",
+          "enabled": true,
+          "export_types": [
+            "standard",
+            "detailed"
+          ]
+        },
+        "budgets": [
+          {
+            "amount": 5000,
+            "include_credits": true,
+            "name": "Production Budget",
+            "notification_channels": {
+              "email": true,
+              "pubsub": false
+            },
+            "scope": "folder",
+            "scope_value": "Production",
+            "thresholds": [
+              {
+                "basis": "CURRENT_SPEND",
+                "percent": 50
+              },
+              {
+                "basis": "CURRENT_SPEND",
+                "percent": 80
+              },
+              {
+                "basis": "CURRENT_SPEND",
+                "percent": 100
+              },
+              {
+                "basis": "FORECASTED_SPEND",
+                "percent": 100
+              }
+            ],
+            "time_period": "monthly"
+          },
+          {
+            "amount": 2000,
+            "include_credits": true,
+            "name": "Non-Production Budget",
+            "notification_channels": {
+              "email": true,
+              "pubsub": false
+            },
+            "scope": "folder",
+            "scope_value": "Non-Production",
+            "thresholds": [
+              {
+                "basis": "CURRENT_SPEND",
+                "percent": 80
+              },
+              {
+                "basis": "CURRENT_SPEND",
+                "percent": 100
+              }
+            ],
+            "time_period": "monthly"
+          }
+        ],
+        "committed_use_discounts": {
+          "enabled": false
+        },
+        "cost_allocation": {
+          "method": "project",
+          "required_labels": [
+            {
+              "enforced": false,
+              "key": "cost-center"
+            }
+          ],
+          "shared_cost_distribution": "none"
+        },
+        "cost_optimization_policies": {
+          "auto_delete_unused_resources": false,
+          "idle_vm_recommendations": true,
+          "preemptible_for_dev": true,
+          "rightsizing_recommendations": true,
+          "unattached_disk_alerts": true,
+          "unused_ip_cleanup": true
+        },
+        "quota_monitoring": {
+          "alert_threshold": 80,
+          "enabled": true,
+          "monitored_quotas": [
+            "compute.googleapis.com/cpus",
+            "compute.googleapis.com/ssd_total_gb"
+          ]
+        }
+      }
+    },
+    "10_backup_dr": {
+      "completion_status": "complete",
+      "diagram_elements": [],
+      "enabled": true,
+      "field_sources": {
+        "backup_policies": "user_input",
+        "database_replication": "user_input",
+        "dr_regions": "user_input",
+        "dr_strategy": "profile_default",
+        "failover_testing": "profile_default",
+        "rpo_rto_requirements": "profile_default",
+        "runbook_configuration": "user_input"
+      },
+      "mode_used": "guided",
+      "section_id": "10_backup_dr",
+      "terraform_resources": [
+        "google_compute_resource_policy",
+        "google_sql_database_instance",
+        "terraform-google-modules/scheduled-snapshots",
+        "local_file"
+      ],
+      "title": "Backup & Disaster Recovery",
+      "values": {
+        "backup_policies": [
+          {
+            "cross_region_copy": false,
+            "frequency": "daily",
+            "name": "daily-compute-snapshots",
+            "point_in_time_recovery": false,
+            "resource_type": "compute_disk",
+            "retention_days": 30
+          },
+          {
+            "cross_region_copy": false,
+            "frequency": "daily",
+            "name": "daily-sql-backup",
+            "point_in_time_recovery": false,
+            "resource_type": "cloud_sql",
+            "retention_days": 30
+          }
+        ],
+        "database_replication": {
+          "cloud_sql_ha": {
+            "cross_region_replica": false,
+            "enabled": true
+          },
+          "point_in_time_recovery": {
+            "retention_days": 7
+          },
+          "spanner_config": {
+            "multi_region": false
+          }
+        },
+        "dr_regions": {
+          "data_residency_compliant": true,
+          "dr_region": "us-west1",
+          "geographic_separation": "same_continent",
+          "primary_region": "us-east1"
+        },
+        "dr_strategy": {
+          "failover_automation": false,
+          "strategy_type": "backup_restore"
+        },
+        "failover_testing": {
+          "enabled": true,
+          "frequency": "annually",
+          "test_type": "tabletop"
+        },
+        "rpo_rto_requirements": {
+          "default_rpo": "24h",
+          "default_rto": "4h"
+        },
+        "runbook_configuration": {
+          "on_call_rotation": "",
+          "runbook_location": ""
+        }
+      }
+    },
+    "11_automation": {
+      "completion_status": "complete",
+      "diagram_elements": [],
+      "enabled": true,
+      "field_sources": {
+        "cicd_config": "user_input",
+        "drift_detection": "user_input",
+        "gitops_config": "user_input",
+        "iac_tool": "profile_default",
+        "policy_as_code": "user_input",
+        "terraform_config": "user_input"
+      },
+      "mode_used": "guided",
+      "section_id": "11_automation",
+      "terraform_resources": [
+        "local_file",
+        "google_gke_hub_feature_membership",
+        "google_storage_bucket",
+        "terraform-google-modules/cloud-build",
+        "google_iam_workload_identity_pool",
+        "google_cloud_scheduler_job",
+        "google_clouddeploy_delivery_pipeline"
+      ],
+      "title": "Automation & CI/CD",
+      "values": {
+        "cicd_config": {
+          "artifact_registry_enabled": true,
+          "binary_authorization": false,
+          "deployment_pipelines": [
+            {
+              "environments": [
+                "dev",
+                "staging",
+                "prod"
+              ],
+              "name": "infrastructure",
+              "require_approval": [
+                "prod"
+              ],
+              "type": "terraform"
+            }
+          ],
+          "platform": "github_actions",
+          "vulnerability_scanning": true,
+          "workload_identity_enabled": true
+        },
+        "drift_detection": {
+          "auto_remediate": false,
+          "enabled": true,
+          "notification_channel": "",
+          "schedule": "daily"
+        },
+        "gitops_config": {
+          "enabled": true,
+          "repo_structure": "monorepo",
+          "sync_interval": 60,
+          "tool": "config_sync"
+        },
+        "iac_tool": "terraform",
+        "policy_as_code": {
+          "custom_policies": false,
+          "enabled": true,
+          "enforcement_mode": "advisory",
+          "tools": [
+            "tflint",
+            "checkov"
+          ]
+        },
+        "terraform_config": {
+          "encryption_key": "",
+          "state_backend": "gcs",
+          "state_bucket": "",
+          "state_locking": true,
+          "version_constraint": "~> 5.0",
+          "workspace_strategy": "directories"
+        }
+      }
+    },
+    "12_gke_containers": {
+      "completion_status": "complete",
+      "diagram_elements": [],
+      "enabled": true,
+      "field_sources": {
+        "addons": "user_input",
+        "cluster_mode": "profile_default",
+        "clusters": "user_input",
+        "fleet_management": "profile_default",
+        "networking_config": "user_input",
+        "security_config": "user_input"
+      },
+      "mode_used": "guided",
+      "section_id": "12_gke_containers",
+      "terraform_resources": [
+        "google_container_node_pool",
+        "google_gke_hub_membership",
+        "google_container_cluster",
+        "terraform-google-modules/kubernetes-engine"
+      ],
+      "title": "GKE & Containers",
+      "values": {
+        "addons": {
+          "backup_for_gke": false,
+          "config_connector": false,
+          "gce_persistent_disk_csi_driver": true,
+          "gcp_filestore_csi_driver": false,
+          "horizontal_pod_autoscaling": true,
+          "http_load_balancing": true
+        },
+        "cluster_mode": "autopilot",
+        "clusters": [
+          {
+            "maintenance_window": {
+              "recurrence": "FREQ=WEEKLY;BYDAY=SA,SU",
+              "start_time": "03:00"
+            },
+            "master_authorized_networks": true,
+            "master_ipv4_cidr_block": "",
+            "name": "gke-prod",
+            "private_cluster": true,
+            "private_endpoint": false,
+            "project": "prj-gke",
+            "region": "us-west1",
+            "release_channel": "REGULAR",
+            "type": "autopilot"
+          }
+        ],
+        "fleet_management": {
+          "config_management": false,
+          "enabled": false,
+          "policy_controller": false,
+          "service_mesh": false
+        },
+        "networking_config": {
+          "dataplane_v2": true,
+          "enable_private_nodes": true,
+          "pod_range_name": "pods",
+          "service_range_name": "services",
+          "subnet": "sb-prod-us-east1",
+          "vpc_network": "vpc-shared-prod"
+        },
+        "security_config": {
+          "binary_authorization": false,
+          "intranode_visibility": false,
+          "network_policy": true,
+          "pod_security_policy": "baseline",
+          "secrets_encryption": false,
+          "shielded_nodes": true,
+          "workload_identity": true
+        }
+      }
+    },
+    "13_data_platform": {
+      "completion_status": "complete",
+      "diagram_elements": [],
+      "enabled": true,
+      "field_sources": {
+        "bigquery_config": "user_input",
+        "cloud_sql_config": "user_input",
+        "cloud_storage_config": "user_input",
+        "dataflow_config": "user_input",
+        "firestore_config": "user_input",
+        "pubsub_config": "user_input"
+      },
+      "mode_used": "guided",
+      "section_id": "13_data_platform",
+      "terraform_resources": [
+        "google_bigquery_dataset",
+        "google_pubsub_topic",
+        "google_storage_bucket",
+        "google_sql_database_instance",
+        "terraform-google-modules/sql-db",
+        "google_dataflow_job",
+        "google_firestore_database"
+      ],
+      "title": "Data Platform",
+      "values": {
+        "bigquery_config": {
+          "authorized_datasets": false,
+          "cmek_enabled": true,
+          "column_level_security": false,
+          "data_masking": false,
+          "default_location": "US",
+          "default_table_expiration_days": null,
+          "enabled": true
+        },
+        "cloud_sql_config": {
+          "backup_enabled": true,
+          "backup_start_time": "03:00",
+          "cmek_enabled": true,
+          "default_database_version": "POSTGRES_15",
+          "default_tier": "db-custom-2-7680",
+          "deletion_protection": true,
+          "enabled": true,
+          "high_availability": true,
+          "point_in_time_recovery": false,
+          "private_network": true,
+          "require_ssl": true
+        },
+        "cloud_storage_config": {
+          "cmek_enabled": true,
+          "default_storage_class": "STANDARD",
+          "enabled": true,
+          "public_access_prevention": "enforced",
+          "retention_policy_enabled": false,
+          "uniform_bucket_level_access": true,
+          "versioning_enabled": true
+        },
+        "dataflow_config": {
+          "enabled": false
+        },
+        "firestore_config": {
+          "cmek_enabled": true,
+          "database_type": "firestore_native",
+          "delete_protection": true,
+          "enabled": true,
+          "location": "nam5",
+          "point_in_time_recovery": false
+        },
+        "pubsub_config": {
+          "cmek_enabled": true,
+          "dead_letter_enabled": false,
+          "default_message_retention": "7d",
+          "enabled": true,
+          "schema_validation": false
+        }
+      }
+    },
+    "14_observability": {
+      "completion_status": "complete",
+      "diagram_elements": [],
+      "enabled": true,
+      "field_sources": {
+        "cloud_profiler": "profile_default",
+        "cloud_trace": "profile_default",
+        "custom_dashboards": "user_input",
+        "error_reporting": "user_input",
+        "log_based_metrics": "profile_default",
+        "slo_definitions": "profile_default",
+        "synthetic_monitoring": "profile_default"
+      },
+      "mode_used": "guided",
+      "section_id": "14_observability",
+      "terraform_resources": [],
+      "title": "Observability & Application Performance",
+      "values": {
+        "cloud_profiler": {
+          "enabled": false,
+          "environments": [
+            "production",
+            "staging"
+          ],
+          "profile_types": [
+            "CPU",
+            "HEAP"
+          ],
+          "service_grouping": "service_version"
+        },
+        "cloud_trace": {
+          "enabled": true,
+          "opentelemetry_integration": {
+            "auto_instrumentation": [
+              "http",
+              "grpc"
+            ],
+            "enabled": true
+          },
+          "propagation_format": "w3c",
+          "sampling_rate": 0.01
+        },
+        "custom_dashboards": [
+          {
+            "category": "service",
+            "name": "Service Health",
+            "refresh_interval": "5m",
+            "template": "cloud_run"
+          },
+          {
+            "category": "infrastructure",
+            "name": "Infrastructure Overview",
+            "refresh_interval": "5m",
+            "template": "gke_cluster"
+          }
+        ],
+        "error_reporting": {
+          "enabled": true,
+          "error_grouping": "default",
+          "new_error_notification": true,
+          "regression_notification": true
+        },
+        "log_based_metrics": [],
+        "slo_definitions": [],
+        "synthetic_monitoring": {
+          "enabled": false
+        }
+      }
+    },
+    "15_application_services": {
+      "completion_status": "complete",
+      "diagram_elements": [],
+      "enabled": true,
+      "field_sources": {
+        "api_gateway": "profile_default",
+        "cloud_functions": "user_input",
+        "cloud_run": "user_input",
+        "cloud_scheduler": "profile_default",
+        "cloud_tasks": "profile_default",
+        "load_balancer": "profile_default"
+      },
+      "mode_used": "guided",
+      "section_id": "15_application_services",
+      "terraform_resources": [],
+      "title": "Application Services",
+      "values": {
+        "api_gateway": {
+          "enabled": false
+        },
+        "cloud_functions": {
+          "default_settings": {
+            "default_memory": "256Mi",
+            "default_runtime": "python312",
+            "default_timeout_seconds": 60,
+            "generation": "gen2",
+            "ingress": "ALLOW_INTERNAL_AND_GCLB",
+            "max_instances": 100,
+            "min_instances": 0,
+            "vpc_connector_enabled": true
+          },
+          "enabled": true
+        },
+        "cloud_run": {
+          "default_settings": {
+            "binary_authorization": false,
+            "cpu_allocation": "request_time",
+            "default_concurrency": 80,
+            "default_cpu": "1",
+            "default_memory": "1Gi",
+            "default_timeout_seconds": 300,
+            "encryption_key": "google_managed",
+            "execution_environment": "gen2",
+            "ingress": "internal-and-cloud-load-balancing",
+            "max_instances": 50,
+            "min_instances": 1,
+            "vpc_connector_enabled": true,
+            "vpc_egress": "private-ranges-only"
+          },
+          "enabled": true,
+          "traffic_management": {
+            "gradual_rollout": false
+          }
+        },
+        "cloud_scheduler": {
+          "enabled": true
+        },
+        "cloud_tasks": {
+          "enabled": false
+        },
+        "load_balancer": {
+          "enabled": false
+        }
+      }
+    },
+    "16_resource_management": {
+      "completion_status": "complete",
+      "diagram_elements": [],
+      "enabled": true,
+      "field_sources": {
+        "asset_inventory": "user_input",
+        "labeling_strategy": "user_input",
+        "naming_conventions": "user_input",
+        "quota_management": "profile_default",
+        "resource_cleanup_policies": "profile_default",
+        "resource_tags": "profile_default"
+      },
+      "mode_used": "guided",
+      "section_id": "16_resource_management",
+      "terraform_resources": [],
+      "title": "Resource Management",
+      "values": {
+        "asset_inventory": {
+          "asset_types": [
+            "all"
+          ],
+          "enabled": true,
+          "export_destination": "bigquery",
+          "export_project": "",
+          "export_schedule": "daily",
+          "include_iam_policy": true,
+          "retention_days": 90
+        },
+        "labeling_strategy": {
+          "label_enforcement": {
+            "enabled": true,
+            "enforcement_level": "warn"
+          },
+          "required_labels": [
+            {
+              "allowed_values": [
+                "dev",
+                "staging",
+                "prod"
+              ],
+              "default_value": "",
+              "description": "Deployment environment",
+              "key": "environment"
+            },
+            {
+              "default_value": "",
+              "description": "Team or individual owner",
+              "key": "owner"
+            },
+            {
+              "default_value": "",
+              "description": "Cost center for chargeback",
+              "key": "cost-center"
+            }
+          ]
+        },
+        "naming_conventions": {
+          "project_pattern": "{org}-{env}-{team}-{purpose}"
+        },
+        "quota_management": {
+          "alert_threshold_percent": 75,
+          "monitored_quotas": [
+            "compute.googleapis.com/cpus",
+            "compute.googleapis.com/ssd_total_gb",
+            "container.googleapis.com/clusters"
+          ],
+          "quota_alerts_enabled": true
+        },
+        "resource_cleanup_policies": {
+          "enabled": false
+        },
+        "resource_tags": {
+          "enabled": false,
+          "inheritance_enabled": true
+        }
+      }
+    },
+    "17_compute_engine": {
+      "completion_status": "complete",
+      "diagram_elements": [],
+      "enabled": true,
+      "field_sources": {
+        "disk_defaults": "profile_default",
+        "image_os_policies": "profile_default",
+        "instance_group_defaults": "profile_default",
+        "sole_tenant_config": "profile_default",
+        "vm_defaults": "profile_default"
+      },
+      "mode_used": "guided",
+      "section_id": "17_compute_engine",
+      "terraform_resources": [],
+      "title": "Compute Engine",
+      "values": {
+        "disk_defaults": {
+          "auto_delete_boot_disk": true,
+          "default_boot_disk_size_gb": 50,
+          "default_disk_type": "pd-balanced",
+          "encryption": "google_managed",
+          "snapshot_policy": {
+            "enabled": true,
+            "frequency": "daily",
+            "retention_days": 30,
+            "storage_locations": "same_region"
+          }
+        },
+        "image_os_policies": {
+          "os_config": {
+            "compliance_scanning": {
+              "enabled": true,
+              "scan_frequency": "weekly"
+            },
+            "enabled": true,
+            "patch_management": {
+              "auto_patch_enabled": true,
+              "patch_frequency": "monthly",
+              "patch_window": "02:00-06:00",
+              "reboot_policy": "default"
+            }
+          },
+          "trusted_images": {
+            "allowed_image_projects": [
+              "cos-cloud",
+              "ubuntu-os-cloud",
+              "debian-cloud",
+              "rhel-cloud",
+              "rocky-linux-cloud",
+              "windows-cloud"
+            ],
+            "enforce": true
+          }
+        },
+        "instance_group_defaults": {
+          "autoscaling_defaults": {
+            "cooldown_period_sec": 60,
+            "cpu_target": 60,
+            "max_replicas": 10,
+            "min_replicas": 1
+          },
+          "enabled": true,
+          "health_check_defaults": {
+            "check_interval_sec": 30,
+            "healthy_threshold": 2,
+            "protocol": "TCP",
+            "unhealthy_threshold": 3
+          },
+          "update_policy": {
+            "max_surge": 1,
+            "max_unavailable": 0,
+            "type": "PROACTIVE"
+          }
+        },
+        "sole_tenant_config": {
+          "default_placement_type": "spread",
+          "maintenance_policy": "default",
+          "placement_policy_enabled": false,
+          "sole_tenancy_enabled": false,
+          "sole_tenant_node_type": "n2-node-80-640"
+        },
+        "vm_defaults": {
+          "access_controls": {
+            "block_project_ssh_keys": true,
+            "disable_nested_virtualization": true,
+            "disable_serial_port": true,
+            "os_login_2fa": false,
+            "os_login_enabled": true,
+            "require_service_account": true,
+            "restrict_external_ip": "deny_all"
+          },
+          "confidential_computing": {
+            "enabled": false
+          },
+          "default_machine_family": "n2",
+          "enabled": true,
+          "metadata_policies": {
+            "block_project_metadata_ssh_keys": true,
+            "enable_guest_attributes": false
+          },
+          "network_policies": {
+            "default_network_tier": "PREMIUM",
+            "ip_forwarding_disabled": true,
+            "require_network_tags": true
+          },
+          "shielded_vm": {
+            "enabled": true,
+            "integrity_monitoring": true,
+            "secure_boot": false,
+            "vtpm": true
+          }
+        }
+      }
+    }
+  },
+  "spec_version": "1.0.0",
+  "validation_results": {
+    "errors": [],
+    "is_valid": true,
+    "warnings": []
+  }
+}

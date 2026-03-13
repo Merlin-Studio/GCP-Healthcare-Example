@@ -1,0 +1,23 @@
+# Egress: Centralized logging to sinks outside perimeter
+#
+# Compliance:
+#   CIS Benchmarks: CIS GCP 2.x Logging — ensure log sinks deliver to centralized destinations
+#   SOC 2: CC7.2 System monitoring — ensure monitoring data reaches centralized analysis
+#   HIPAA: §164.312(b) Audit controls — mechanisms to record and examine access to ePHI
+#
+# Without this, log delivery to centralized sinks fails silently.
+
+from:
+  identities:
+  - '*'
+to:
+  operations:
+  - method_selectors:
+    - google.logging.v2.LoggingServiceV2.WriteLogEntries
+    - google.logging.v2.LoggingServiceV2.CreateLogEntry
+    service_name: logging.googleapis.com
+  - method_selectors:
+    - google.cloud.bigquery.v2.TableDataService.InsertAll
+    service_name: bigquery.googleapis.com
+  resources:
+  - '*'

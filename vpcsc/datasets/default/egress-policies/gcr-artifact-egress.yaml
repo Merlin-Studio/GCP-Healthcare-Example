@@ -1,0 +1,23 @@
+# Egress: Container image pulls from Artifact Registry
+#
+# Compliance:
+#   CIS Benchmarks: CIS GCP 6.x GKE — pull container images from Artifact Registry only
+#   SOC 2: CC6.1 Integrity controls — controlled egress for software artifact retrieval
+#   HIPAA: §164.312(c)(1) Integrity — ensure software integrity through controlled image sources
+#
+# ARCHITECT NOTE: For production, mirror all images into your own AR
+# and consider removing this rule.
+#
+# ARCHITECT TODO:
+# - [ ] Replace PROJECT_NUMBER with GKE project number
+
+from:
+  identities:
+  - serviceAccount:service-PROJECT_NUMBER@compute-system.iam.gserviceaccount.com
+to:
+  operations:
+  - method_selectors:
+    - '*'
+    service_name: artifactregistry.googleapis.com
+  resources:
+  - '*'

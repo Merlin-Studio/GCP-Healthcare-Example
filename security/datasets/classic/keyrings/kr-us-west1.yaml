@@ -1,0 +1,129 @@
+# KMS keyring: kr-us-west1
+# Central keyring for CMEK keys protecting workload data at rest.
+#
+# Compliance — Encryption at Rest:
+#   CIS Benchmarks: CIS GCP 1.10 — KMS encryption keys rotated within 90 days
+#   HIPAA: 164.312(a)(2)(iv) Encryption and decryption — mechanism to encrypt/decrypt ePHI
+#   SOC 2: CC6.1 Logical access security — encryption keys managed with defined access controls
+#
+# Compliance — Key Rotation:
+#   CIS Benchmarks: CIS GCP 1.10 — KMS keys rotated within 90 days
+#   HIPAA: 164.312(a)(2)(iv) Key management — rotation procedures enforced
+#   SOC 2: CC6.1 Key rotation — periodic rotation per documented policy
+#
+# Compliance — Key Access (IAM):
+#   CIS Benchmarks: CIS GCP 1.x IAM — service account key access follows least privilege
+#   HIPAA: 164.312(a)(1) Access control — key access limited to required identities
+#   SOC 2: CC6.3 Role-based access — key access granted per service agent role
+#
+# HIPAA NOTE: These keys encrypt ePHI at rest per 164.312(a)(2)(iv).
+#
+# KEY DESIGN: One key per CMEK-supporting service for crypto-shredding
+# granularity. Disabling a single key only affects one service type.
+#
+# ARCHITECT TODO:
+#   - [ ] After project creation, run IAM binding commands in CMEK_WIRING.md
+#   - [ ] Verify rotation_period: 90 days (7776000s)
+#   - [ ] Review protection level: SOFTWARE
+
+location: us-west1
+keys:
+  artifactregistry:
+    rotation_period: 7776000s
+    labels:
+      purpose: cmek
+      service: artifactregistry
+      managed-by: architex
+    iam:
+      roles/cloudkms.cryptoKeyEncrypterDecrypter:
+      - $iam_principals:gcp-security-admins
+  bigquery:
+    rotation_period: 7776000s
+    labels:
+      purpose: cmek
+      service: bigquery
+      managed-by: architex
+    iam:
+      roles/cloudkms.cryptoKeyEncrypterDecrypter:
+      - $iam_principals:gcp-security-admins
+  cloudfunctions:
+    rotation_period: 7776000s
+    labels:
+      purpose: cmek
+      service: cloudfunctions
+      managed-by: architex
+    iam:
+      roles/cloudkms.cryptoKeyEncrypterDecrypter:
+      - $iam_principals:gcp-security-admins
+  cloudrun:
+    rotation_period: 7776000s
+    labels:
+      purpose: cmek
+      service: cloudrun
+      managed-by: architex
+    iam:
+      roles/cloudkms.cryptoKeyEncrypterDecrypter:
+      - $iam_principals:gcp-security-admins
+  cloudsql:
+    rotation_period: 7776000s
+    labels:
+      purpose: cmek
+      service: cloudsql
+      managed-by: architex
+    iam:
+      roles/cloudkms.cryptoKeyEncrypterDecrypter:
+      - $iam_principals:gcp-security-admins
+  compute:
+    rotation_period: 7776000s
+    labels:
+      purpose: cmek
+      service: compute
+      managed-by: architex
+    iam:
+      roles/cloudkms.cryptoKeyEncrypterDecrypter:
+      - $iam_principals:gcp-security-admins
+  firestore:
+    rotation_period: 7776000s
+    labels:
+      purpose: cmek
+      service: firestore
+      managed-by: architex
+    iam:
+      roles/cloudkms.cryptoKeyEncrypterDecrypter:
+      - $iam_principals:gcp-security-admins
+  gke:
+    rotation_period: 7776000s
+    labels:
+      purpose: cmek
+      service: gke
+      managed-by: architex
+    iam:
+      roles/cloudkms.cryptoKeyEncrypterDecrypter:
+      - $iam_principals:gcp-security-admins
+  logging:
+    rotation_period: 7776000s
+    labels:
+      purpose: cmek
+      service: logging
+      managed-by: architex
+    iam:
+      roles/cloudkms.cryptoKeyEncrypterDecrypter:
+      - $iam_principals:gcp-security-admins
+  pubsub:
+    rotation_period: 7776000s
+    labels:
+      purpose: cmek
+      service: pubsub
+      managed-by: architex
+    iam:
+      roles/cloudkms.cryptoKeyEncrypterDecrypter:
+      - $iam_principals:gcp-security-admins
+  storage:
+    rotation_period: 7776000s
+    labels:
+      purpose: cmek
+      service: storage
+      managed-by: architex
+    iam:
+      roles/cloudkms.cryptoKeyEncrypterDecrypter:
+      - $iam_principals:gcp-security-admins

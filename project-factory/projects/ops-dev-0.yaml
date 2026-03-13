@@ -1,0 +1,8 @@
+parent: $folder_ids:development/development
+services:
+- clouderrorreporting.googleapis.com
+- cloudtrace.googleapis.com
+labels:
+  managed-by: architex
+  workload: observability
+  environment: dev

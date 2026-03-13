@@ -1,0 +1,16 @@
+# Access level: Corporate network ranges
+#
+# Compliance:
+#   CIS Benchmarks: CIS GCP 3.x Network access — restrict access to resources from known IP ranges
+#   SOC 2: CC6.1 Logical access security — restrict access to authorized network locations
+#   HIPAA: §164.312(d) Person or entity authentication — verify identity of persons seeking access
+#
+# ARCHITECT TODO:
+# - [ ] Replace placeholder CIDRs with actual corporate egress IPs
+# - [ ] Add VPN gateway IPs if remote workers use VPN
+
+description: Access from corporate network. Replace placeholder IPs with actual corporate egress IP ranges.
+conditions:
+- ip_subnetworks:
+  - 203.0.113.0/24
+  - 198.51.100.0/24

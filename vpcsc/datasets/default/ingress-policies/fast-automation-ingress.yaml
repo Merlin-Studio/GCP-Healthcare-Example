@@ -1,0 +1,25 @@
+# Ingress: FAST Terraform automation
+#
+# Compliance:
+#   CIS Benchmarks: CIS GCP 1.x IAM — infrastructure changes through managed service accounts only
+#   SOC 2: CC8.1 Change management — changes are authorized, tested, and implemented via IaC
+#   HIPAA: §164.312(e)(2)(ii) Integrity controls — mechanism to authenticate infrastructure changes
+
+from:
+  identities:
+  - $iam_principals:service_accounts/iac-0/iac-org-rw
+  - $iam_principals:service_accounts/iac-0/iac-vpcsc-rw
+  - $iam_principals:service_accounts/iac-0/iac-networking-rw
+  - $iam_principals:service_accounts/iac-0/iac-security-rw
+  - $iam_principals:service_accounts/iac-0/iac-pf-rw
+  - $iam_principals:service_accounts/iac-0/terraform-org-sa
+  - $iam_principals:service_accounts/iac-0/cicd-deploy-sa
+  sources:
+  - access_level: fast-automation
+to:
+  operations:
+  - method_selectors:
+    - '*'
+    service_name: '*'
+  resources:
+  - '*'
