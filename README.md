@@ -5,6 +5,10 @@
 > Design Studio built on [Cloud Foundation Fabric (FAST)](https://github.com/GoogleCloudPlatform/cloud-foundation-fabric).
 > Generate your own at [site.merlin-studio.cloud](https://site.merlin-studio.cloud).
 
+🆓 **Merlin is now open — no signup, no email.** Guest mode lets you
+> start designing your own landing zone instantly.
+> **[Open Merlin →](https://app.merlin-studio.cloud)**
+
 ---
 
 ## Overview
