@@ -1,0 +1,455 @@
+
+%% ==========================================================================
+%% GCP LANDING ZONE ARCHITECTURE
+%% Organization: Healthcare Provider
+%% Generated: 2026-02-22T10:15:40.581203Z
+%% Profile: STANDARD
+%% ==========================================================================
+
+graph TB
+
+    %% ====================================================================
+    %% ARCHITECTURE OVERVIEW
+    %% ====================================================================
+    subgraph ARCHITECTURE_OVERVIEW["Architecture Overview"]
+        direction TB
+        subgraph ORG["Healthcare Provider  — GCP Landing Zone"]
+            direction TB
+
+            %% Hierarchy
+
+            FOLDERS["📁 Folders<br/>Production, Staging, Development, Shared Services, Security"]
+
+
+            %% Networking
+
+            NET["🌐 Networking: shared-vpc<br/>vpc-shared-prod (production), vpc-shared-dev (non_production)"]
+
+
+
+            NET_vpc_shared_prod["📦 vpc-shared-prod subnets<br/>sb-prod-us-east1: 10.0.0.0/20<br/>sb-prod-us-west1: 10.128.0.0/20"]
+            NET --- NET_vpc_shared_prod
+
+
+
+
+
+
+
+            NET_vpc_shared_dev["📦 vpc-shared-dev subnets<br/>sb-dev-us-east1: 10.1.0.0/20<br/>sb-dev-us-west1: 10.129.0.0/20"]
+            NET --- NET_vpc_shared_dev
+
+
+
+
+
+
+
+            %% Hybrid Connectivity
+
+            HYBRID["🔗 Hybrid: Partner Interconnect"]
+
+            ONPREM["🏢 On-Premises<br/>on-prem-network"]
+            ONPREM <--> HYBRID
+
+            HYBRID --- NET
+
+
+            %% Security
+
+
+
+
+            SEC["🛡️ Security<br/>10 org policies, VPC-SC"]
+
+            %% Workloads
+
+            GKE["🚀 GKE<br/>gke-prod (us-west1)"]
+
+
+            %% Data Platform
+
+
+
+
+
+
+
+
+            %% DR
+
+            DR["🔄 DR: us-west1<br/>Strategy: Backup Restore"]
+
+
+            %% Connections
+            FOLDERS --- NET
+            FOLDERS --- SEC
+
+            NET --- GKE
+
+
+
+            NET -.-> DR
+
+        end
+
+        %% Styling
+    end
+
+    %% ====================================================================
+    %% RESOURCE HIERARCHY
+    %% ====================================================================
+    subgraph RESOURCE_HIERARCHY["Resource Hierarchy"]
+        direction TD
+        subgraph RESOURCE_H_ORG["🏢 Organization: Healthcare Provider "]
+            direction TB
+            ORG_ROOT(("org-id"))
+
+
+            %% Folder: Production
+            ORG_ROOT --> FOLDER_Production["📁 Production"]
+
+
+            %% Folder: Staging
+            ORG_ROOT --> FOLDER_Staging["📁 Staging"]
+
+
+            %% Folder: Development
+            ORG_ROOT --> FOLDER_Development["📁 Development"]
+
+
+            %% Folder: Shared Services
+            ORG_ROOT --> FOLDER_Shared_Services["📁 Shared Services"]
+
+
+            %% Folder: Security
+            ORG_ROOT --> FOLDER_Security["📁 Security"]
+
+
+
+
+            %% Bootstrap/Seed Projects
+
+            FOLDER_Shared_Services --> PRJ_prj_seed_cicd[("💼 prj-seed-cicd")]
+
+            FOLDER_Security --> PRJ_prj_seed_logging[("💼 prj-seed-logging")]
+
+            FOLDER_Shared_Services --> PRJ_prj_seed_networking[("💼 prj-seed-networking")]
+
+
+        end
+
+        %% Styling
+    end
+
+    %% ====================================================================
+    %% NETWORK TOPOLOGY
+    %% ====================================================================
+    subgraph NETWORK_TOPOLOGY["Network Topology"]
+        direction TB
+        subgraph NETWORK_TO_NET["🌐 Network Architecture: SHARED_VPC"]
+            direction TB
+
+
+            subgraph VPC_vpc_shared_prod["VPC: vpc-shared-prod"]
+                direction TB
+                VPC_vpc_shared_prod_NODE["🔷 vpc-shared-prod<br/>GLOBAL<br/><i>production</i>"]
+
+                VPC_vpc_shared_prod_NODE --- SUB_sb_prod_us_east1["📦 sb-prod-us-east1<br/>10.0.0.0/20<br/><i>us-east1</i>"]
+
+                VPC_vpc_shared_prod_NODE --- SUB_sb_prod_us_west1["📦 sb-prod-us-west1<br/>10.128.0.0/20<br/><i>us-west1</i>"]
+
+            end
+
+
+            subgraph VPC_vpc_shared_dev["VPC: vpc-shared-dev"]
+                direction TB
+                VPC_vpc_shared_dev_NODE["🔷 vpc-shared-dev<br/>GLOBAL<br/><i>non_production</i>"]
+
+                VPC_vpc_shared_dev_NODE --- SUB_sb_dev_us_east1["📦 sb-dev-us-east1<br/>10.1.0.0/20<br/><i>us-east1</i>"]
+
+                VPC_vpc_shared_dev_NODE --- SUB_sb_dev_us_west1["📦 sb-dev-us-west1<br/>10.129.0.0/20<br/><i>us-west1</i>"]
+
+            end
+
+
+
+
+
+            %% Cloud NAT & Internet
+            INTERNET["🌍 Internet"]
+
+            NAT_nat_vpc_shared_prod_us_east1["🔀 NAT: nat-vpc-shared-prod-us-east1"]
+            VPC_vpc_shared_prod_NODE --> NAT_nat_vpc_shared_prod_us_east1
+            NAT_nat_vpc_shared_prod_us_east1 --> INTERNET
+
+            NAT_nat_vpc_shared_prod_us_west1["🔀 NAT: nat-vpc-shared-prod-us-west1"]
+            VPC_vpc_shared_prod_NODE --> NAT_nat_vpc_shared_prod_us_west1
+            NAT_nat_vpc_shared_prod_us_west1 --> INTERNET
+
+            NAT_nat_vpc_shared_dev_us_east1["🔀 NAT: nat-vpc-shared-dev-us-east1"]
+            VPC_vpc_shared_dev_NODE --> NAT_nat_vpc_shared_dev_us_east1
+            NAT_nat_vpc_shared_dev_us_east1 --> INTERNET
+
+            NAT_nat_vpc_shared_dev_us_west1["🔀 NAT: nat-vpc-shared-dev-us-west1"]
+            VPC_vpc_shared_dev_NODE --> NAT_nat_vpc_shared_dev_us_west1
+            NAT_nat_vpc_shared_dev_us_west1 --> INTERNET
+
+
+
+
+            %% Google APIs
+            GAPI["☁️ Google APIs"]
+
+            VPC_vpc_shared_prod_NODE -.->|"PGA"| GAPI
+
+            VPC_vpc_shared_dev_NODE -.->|"PGA"| GAPI
+
+
+        end
+
+        %% Styling
+    end
+
+    %% ====================================================================
+    %% IAM & IDENTITY
+    %% ====================================================================
+    subgraph IAM_IDENTITY["IAM & Identity"]
+        direction LR
+        subgraph IDP["🔐 Identity Provider"]
+
+            IDENTITY["Google Workspace"]
+
+        end
+
+        subgraph GROUPS["👥 Admin Groups"]
+            direction TB
+
+            GROUP_1["Org Admin"]
+
+            GROUP_2["Billing Admin"]
+
+            GROUP_3["Network Admin"]
+
+            GROUP_4["Security Admin"]
+
+        end
+
+        subgraph ROLES["🎭 Organization Roles"]
+            direction TB
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            ROLE_1["resourcemanager.organizationAdmin"]
+
+            ROLE_2["billing.admin"]
+
+            ROLE_3["compute.networkAdmin"]
+
+            ROLE_4["iam.securityAdmin"]
+
+
+        end
+
+
+        subgraph SAs["🤖 Service Accounts"]
+            direction TB
+
+            SA_1["terraform-org-sa"]
+
+            SA_2["cicd-deploy-sa"]
+
+
+        end
+
+
+        subgraph IAM_IDENTI_ORG["🏢 Organization"]
+            ORG_NODE(("Resources"))
+        end
+
+        %% Connections
+
+        IDENTITY --> GROUP_1
+        GROUP_1 -.-> ORG_NODE
+
+        IDENTITY --> GROUP_2
+        GROUP_2 -.-> ORG_NODE
+
+        IDENTITY --> GROUP_3
+        GROUP_3 -.-> ORG_NODE
+
+        IDENTITY --> GROUP_4
+        GROUP_4 -.-> ORG_NODE
+
+
+
+        SA_1 -.-> ORG_NODE
+
+        SA_2 -.-> ORG_NODE
+
+
+
+        %% Styling
+    end
+
+    %% ====================================================================
+    %% VPC SERVICE CONTROLS
+    %% ====================================================================
+    subgraph VPC_SERVICE_CONTROLS["VPC Service Controls"]
+        direction TB
+        subgraph VPCSC["🛡️ VPC Service Controls"]
+            direction TB
+
+            VPC_SERVIC_INTERNET["🌍 Untrusted<br/>Internet"]
+
+
+
+        end
+
+        %% Connections
+
+
+        %% Styling
+    end
+
+    %% ====================================================================
+    %% DISASTER RECOVERY
+    %% ====================================================================
+    subgraph DISASTER_RECOVERY["Disaster Recovery"]
+        direction LR
+        subgraph PRIMARY["🟢 Primary Region: us-east1"]
+            direction TB
+            PROD_WL["💼 Production<br/>Workloads"]
+            PROD_DB["💾 Primary<br/>Databases"]
+            PROD_STORAGE["🗄️ Primary<br/>Storage"]
+        end
+
+        subgraph DISASTER_R_DR["⚪ DR Region: us-west1"]
+            direction TB
+
+            DR_WL["💼 Backup<br/>Restore Target"]
+
+            DR_DB["💾 Replica<br/>Databases"]
+            DR_STORAGE["🗄️ Replicated<br/>Storage"]
+        end
+
+        subgraph METRICS["📊 Recovery Objectives"]
+            RPO["RPO: 24h"]
+            RTO["RTO: 4h"]
+        end
+
+        %% Replication flows
+
+
+
+
+
+        PROD_DB -.->|"backup"| DR_DB
+        PROD_STORAGE -.->|"backup"| DR_STORAGE
+
+
+
+        %% Styling
+    end
+
+    %% ====================================================================
+    %% GKE ARCHITECTURE
+    %% ====================================================================
+    subgraph GKE_ARCHITECTURE["GKE Architecture"]
+        direction TB
+        subgraph GKE_ARCHIT_GKE["🚀 GKE Clusters"]
+            direction TB
+
+            subgraph CLUSTER_gke_prod["gke-prod"]
+                CP_gke_prod["🎮 Control Plane<br/>Autopilot<br/><i>us-west1</i>"]
+
+                CP_gke_prod --> AP_gke_prod["☁️ Autopilot<br/>Auto-managed"]
+
+            end
+
+
+        end
+
+
+        subgraph SECURITY["🔐 Security Features"]
+
+            WI["✅ Workload Identity"]
+
+
+            SN["✅ Shielded Nodes"]
+
+
+
+            NETPOL["✅ Network Policy"]
+
+        end
+
+
+
+
+        %% Styling
+    end
+
+    %% ====================================================================
+    %% STYLING
+    %% ====================================================================
+    style ORG fill:none,stroke:#4285F4,stroke-width:2px
+    style FOLDERS fill:#4285F4,stroke:#1a73e8,stroke-width:2px,color:white
+    style NET fill:#34A853,stroke:#1e8e3e,stroke-width:2px,color:white
+    style SEC fill:#EA4335,stroke:#d93025,stroke-width:2px,color:white
+    style HYBRID fill:#9C27B0,stroke:#7B1FA2,stroke-width:2px,color:white
+    style GKE fill:#4285F4,stroke:#1a73e8,stroke-width:2px,color:white
+    style DR fill:#FF5722,stroke:#E64A19,stroke-width:2px,color:white
+    style ORG_ROOT fill:#4285F4,stroke:#1a73e8,stroke-width:3px,color:white
+    style FOLDER_Production fill:#4285F4,stroke:#1a73e8,stroke-width:2px,color:white
+    style FOLDER_Staging fill:#4285F4,stroke:#1a73e8,stroke-width:2px,color:white
+    style FOLDER_Development fill:#4285F4,stroke:#1a73e8,stroke-width:2px,color:white
+    style FOLDER_Shared_Services fill:#34A853,stroke:#1e8e3e,stroke-width:2px,color:white
+    style FOLDER_Security fill:#EA4335,stroke:#d93025,stroke-width:2px,color:white
+    style INTERNET fill:#EA4335,stroke:#d93025,stroke-width:2px,color:white
+    style GAPI fill:#34A853,stroke:#1e8e3e,stroke-width:2px,color:white
+    style VPC_vpc_shared_prod_NODE fill:#34A853,stroke:#1e8e3e,stroke-width:2px,color:white
+    style VPC_vpc_shared_dev_NODE fill:#4285F4,stroke:#1a73e8,stroke-width:2px,color:white
+    style IDENTITY fill:#EA4335,stroke:#d93025,stroke-width:2px,color:white
+    style ORG_NODE fill:#4285F4,stroke:#1a73e8,stroke-width:2px,color:white
+    style VPC_SERVIC_INTERNET fill:#EA4335,stroke:#d93025,stroke-width:2px,color:white
+    style PROD_WL fill:#34A853,stroke:#1e8e3e,stroke-width:2px,color:white
+    style DR_WL fill:#9E9E9E,stroke:#757575,stroke-width:2px,color:white
+    style CP_gke_prod fill:#4285F4,stroke:#1a73e8,stroke-width:2px,color:white
+
+%% ============================================================================
+%% Legend:
+%%   📁 Folder          💼 Project         🌐 VPC            📦 Subnet
+%%   🔒 VPN/Security    ⚡ Interconnect    🔀 Router/NAT     🌍 Internet
+%%   ☁️ Cloud Service   💾 Database        🗄️ Storage        🚀 GKE
+%%   🔐 Identity        👥 Group           🎭 Role           🤖 Service Account
+%%   🛡️ Security        🟢 Production      🟡 Standby        🔴 DR
+%% ============================================================================
