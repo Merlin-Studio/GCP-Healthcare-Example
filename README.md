@@ -287,4 +287,4 @@ Merlin Studio implements the Compiled AI paradigm: LLMs at build time, determini
 Article: [Compile-Time AI for GCP Landing Zones](https://medium.com/google-cloud/compile-time-ai-for-gcp-landing-zones-2555560fbd2f).
 ---
 
-
+⭐ If this saved you time, a star helps others find it.
